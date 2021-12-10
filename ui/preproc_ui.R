@@ -36,10 +36,6 @@ preproc_ui <- function(id, label= "preprocessing data") {
         #### if input data are raw data perform single DE first
         conditionalPanel(
           condition = paste0("input['", ns("inputType"), "'] == '2' "),
-          radioButtons(ns("dtype"), label = "Data type",
-                        choices = list("microarray" = "microarray", 
-                          "RNAseq" = "RNAseq"),
-                          selected = "microarray"),
           fileInput(ns("exprfile"), 'Upload gene expression data file (.csv)',
             accept=c('text/csv', 'text/comma-separated-values,text/plain', 
               '.csv')
@@ -49,8 +45,11 @@ preproc_ui <- function(id, label= "preprocessing data") {
             accept=c('text/csv', 'text/comma-separated-values,text/plain', 
               '.csv')
           ),
-          
-          uiOutput(ns('caseName'))
+          uiOutput(ns('caseName')),
+          radioButtons(ns("dtype"), label = "Differential analysis method",
+                       choices = list("LIMMA (for microarray intensities  / log2-transformed RNA-Seq normalized counts)" = "microarray", 
+                                      "DEseq2 (for RNA-Seq counts)" = "RNAseq"),
+                       selected = "microarray")
         ),
         # #### calculate signed delta and q-values
         actionButton(ns('SingleDE'), 'Bayesian differential analysis', class="btn-success",
