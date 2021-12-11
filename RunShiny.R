@@ -64,9 +64,9 @@ installed <- installed.packages()[,"Package"]
 #   install.packages("DMwR_0.4.1.tar.gz",repos=NULL, type="source")
 # }
 # 
-# if (!("preproc" %in% installed)) {
-#   install_github("metaOmic/preproc")
-# }
+if (!("preproc" %in% installed)) {
+  install_github("metaOmic/preproc")
+}
 # 
 # if (!("KEGG.db" %in% installed)) {
 #   install.packages("KEGG.db_3.2.3.tar.gz",repos=NULL, type="source")
