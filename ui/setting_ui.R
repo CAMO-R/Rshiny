@@ -4,10 +4,10 @@ setting_ui <- function(id, label = "global settings") {
   tabPanel("Setting", value=id,
            h2("Welcome to CAMO",align = "middle",style="primary"),
            tags$hr(),
-           #HTML('<center><img src="pipeline.png" </center>'),
+           #HTML('<center><img src="Rshiny_flowchart.png" width="500" </center>'),
            fluidRow(
-             img(src='pipeline.png',align="left"),
-             p("CAMO is an analytical software with R-Shiny based graphical user interface (GUI) for evaluating omics congruence of model organisms. It performs threshold-free Bayesian differential analysis and generates quantitative concordance and discordance scores (c-scores and d-scores) both genome-wide and at pathway level for all pair-wise studies. Based on the c-scores/d-scores, CAMO conducts a series of downstream machine learning and bioinformatics analysis with interactive visualization for pathway knowledge retrieval and topological gene module detection. Outputs from the tool will provide the foundations for hypothesis generation and subsequent translational investigations."), 
+             img(src='Shiny_flowchart.jpg',align="center",width="1500"),
+             p("CAMO is an analytical software with R-Shiny based graphical user interface (GUI) for evaluating omics congruence of model organisms. It performs threshold-free Bayesian differential analysis and generates quantitative concordance and discordance scores (c-scores and d-scores) both genome-wide and at pathway level for all pair-wise studies. Based on the c-scores/d-scores, CAMO conducts a series of downstream machine learning and bioinformatics analysis with interactive visualization for pathway knowledge retrieval and topological gene module detection. Outputs from the tool will provide foundations for hypothesis generation and subsequent translational investigations."), 
              p("Our tool is available for download on github: ",a(strong("CAMO."), href="https://github.com/weiiizong/CAMO_Rshiny",target="_blank"), 
              "For detailed implementation of the tool, please refer to our ",a(strong("Tutorials."), href="https://github.com/metaOmicsCAMO/tutorial/
 blob/master/CAMO_turtorial.pdf",target="_blank")), 

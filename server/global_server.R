@@ -30,11 +30,46 @@ global_server <- function(input, output, session){
       if(length(unique(DB$MergedSpecies))<2) {
         stop("At least two species are neeeded")
       }
-      # if(length(DB$MergedDB)==2 & length(unique(DB$MergedSpecies))==2){
-      #   DB$compType <- "single"
-      # }else{
-      #   DB$compType <- "multiple"
-      # }
+      output$globalACS_ADSTable <- DT::renderDataTable({
+        if (!file.exists(paste(DB.load.working.dir(db),
+                               "ACS_ADS_global.RData", sep="/"))){
+          data.frame(NULL)
+        }else{
+          load(paste(DB.load.working.dir(db),"ACS_ADS_global.RData", sep="/"))
+          DB$ACS_ADS_global <- ACS_ADS_global
+          if(length(DB$ACS_ADS_global$ACS)==1){
+            res <- matrix(1, length(DB$MergedDB), 
+                          length(DB$MergedDB))
+            colnames(res) <- rownames(res) <- DB$MergedStudyNames
+            res[1,2] <- paste(round(DB$ACS_ADS_global$ACS,3), " (p-val= ", 
+                              round(DB$ACS_ADS_global$ACSpvalue,3), ")", sep="")
+            res[2,1] <- paste(round(DB$ACS_ADS_global$ADS,3), " (p-val= ", 
+                              round(DB$ACS_ADS_global$ADSpvalue,3), ")", sep="")
+            res
+            print(res)
+          }else{
+            res <- DB$ACS_ADS_global$ACS
+            for(i in 1:nrow(res)){
+              for(j in 1:ncol(res)){
+                if(j>=i){
+                  res[i,j] <- paste(
+                    round(DB$ACS_ADS_global$ACS[i,j],3), 
+                    " (pval=", 
+                    round(DB$ACS_ADS_global$ACSpvalue[i,j],3), ")", sep="")
+                }
+                else{
+                  res[i,j] <- paste(
+                    round(DB$ACS_ADS_global$ADS[i,j],3), 
+                    " (pval=", 
+                    round(DB$ACS_ADS_global$ADSpvalue[i,j],3), ")", sep="")
+                }
+              }
+            }
+            res
+          }
+        }
+      })
+      
     }, session)
     print(paste("saving directory is: ", DB.load.working.dir(db), sep=""))
   })
@@ -49,6 +84,9 @@ global_server <- function(input, output, session){
   # })
   
   # global ACS/ADS
+  # output  global ACS/ADS
+  output$Global_ACS_ADS_note <- renderText("Upper triangular matrix: genome-wide c-scores (p-value). 
+                                           Lower triangular matrix: genome-wide d-scores (p-value).")
   observeEvent(input$ACS_ADS, {
     wait(session, "Calculating global c-scores & d-scores, may take a while")
     path_old <- getwd()
@@ -112,9 +150,7 @@ global_server <- function(input, output, session){
       # }
       
       # output  global ACS/ADS
-      output$Global_ACS_ADS_note <- renderText("Upper triangular matrix: genome-wide c-scores (p-value). 
-                                                Lower triangular matrix: genome-wide d-scores (p-value).")
-      output$globalACS_ADSTable <- DT::renderDataTable({
+    output$globalACS_ADSTable <- DT::renderDataTable({
         if (is.null(DB$ACS_ADS_global$ACS)){
           data.frame(NULL)
         }else{

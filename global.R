@@ -7,18 +7,38 @@ if(!("CAMO" %in% installed)){
   stop("Please install CAMO R package first")
 }
 
-## following not necessary
+#CRAN packages:
+for (package in c("utils", "devtools", "shinyBS", "cluster", "parallel", "igraph",
+                  "Rcpp", "RcppArmadillo", "RcppGSL", "ggplot2",
+                  "gplots", "shinyjs","dplyr","gridExtra", "reticulate")) {
+  if (!(package %in% installed)) {
+    install.packages(package, repos='http://cran.us.r-project.org')
+  }
+}
+
+
+#Bioconductor packages:
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+for (package in c("utils", "devtools", "shinyBS", "cluster", "parallel", "igraph",
+                  "Rcpp", "RcppArmadillo", "RcppGSL", "ggplot2",
+                  "gplots", "shinyjs","dplyr","gridExtra", "reticulate")) {
+  if (!(package %in% installed)) {
+    BiocManager::install(package)
+  }
+}
 library(preproc)
 library(shiny)
 library(shinyBS)
 library(shinyjs)
-# library(Rcpp)
-# library(RcppArmadillo)
-# library(RcppGSL)
+library(Rcpp)
+library(RcppArmadillo)
+library(RcppGSL)
 # library(snowfall)
-library(cvTools)
-library(samr)
-# library(limma) # biocon
+# library(cvTools)
+# library(samr)
+library(ggrepel)
+# library(limma) 
 # library(MASS)
 # library(ggrepel)
 # library(ggplot2)
@@ -28,8 +48,8 @@ library(samr)
 # library(ConsensusClusterPlus)
 # library(biomaRt)
 # library(KEGG.db)
-# library(KEGGREST)
-# library(KEGGgraph)
+library(KEGGREST)
+library(KEGGgraph)
 # library(org.Hs.eg.db)
 # library(pathview)
 # library(cluster)
@@ -37,7 +57,7 @@ library(samr)
 # library(grid)
 # library(pathview)
 # library(plotly)
-# library(igraph)
+library(igraph)
 # library(parallel)
 
 #library(DMwR)
@@ -52,7 +72,17 @@ library(cluster)
 # library(KEGGREST)
 # library(igraph)
 # library(parallel)
-# library(reticulate) 
+library(reticulate) 
+
+if(!py_module_available("pillow")) {
+  py_install("pillow", pip = TRUE)
+}
+fh <- import("PIL")
+
+if(!py_module_available("pandas")) {
+  py_install("pandas", pip = TRUE)
+}
+fh <- import("pandas")
 
 ###############
 library(CAMO)  # main pkg

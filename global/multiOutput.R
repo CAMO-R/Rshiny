@@ -986,11 +986,12 @@ genePM <- function(signPM.list, pathway.genes, pathway.name){
     }
     
     #pdf(paste(pathway.name,'.pdf',sep=""))
-    png(paste(pathway.name,".png",sep=""))
     p = pheatmap::pheatmap(mat, clustering_method = "complete",main=pathway.name,
                            color = colorRampPalette(c("green","grey","red"))(n = 499),
                            breaks = seq(-1,1,length.out = 500))
-    p
+    
+    png(paste(pathway.name,".png",sep=""))
+    grid::grid.draw(p$gtable)
     dev.off()
     
   },error = function(e){

@@ -22,9 +22,9 @@ preproc_ui <- function(id, label= "preprocessing data") {
         #         selected = "human"),
         #### chose input data type
         radioButtons(ns("inputType"), label = "Input data type",
-                choices = list("Precalculated p-value and log fold change (logFC) from gene-level differential expression analysis" = 1, 
+                choices = list("Pre-calculated p-value and log fold change (logFC) from gene-level differential expression analysis" = 1, 
                                "Preprocessed gene expression data" = 2),
-                selected = 1),
+                selected = 2),
 
         #### if input data are p-values
         conditionalPanel(

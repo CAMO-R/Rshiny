@@ -30,6 +30,45 @@ pathway_server <- function(input, output, session){
       if(length(unique(DB$MergedSpecies))<2) {
         stop("At least two species are needed")
       }
+      
+      output$pathwayACS_Table <- DT::renderDataTable({
+        if (!file.exists(paste(DB.load.working.dir(db),
+                               "ACS_ADS_pathway.RData", sep="/"))){
+          data.frame(NULL)
+        }else{
+          load(paste(DB.load.working.dir(db),
+                     "ACS_ADS_pathway.RData", sep="/"))
+          DB$ACS_ADS_pathway <- ACS_ADS_pathway
+          res_ACS <- ACS_ADS_pathway$ACS.mat
+          for(i in 1:nrow(res_ACS)){
+            for(j in 1:ncol(res_ACS)){
+              res_ACS[i,j] <-
+                paste(round(ACS_ADS_pathway$ACS.mat[i,j],3), " (pval=",
+                      round(ACS_ADS_pathway$ACSpvalue.mat[i,j], 3), ")", sep="")
+            }
+          }
+          res_ACS
+        }
+      })
+      output$pathwayADS_Table <- DT::renderDataTable({
+        if (!file.exists(paste(DB.load.working.dir(db),
+                               "ACS_ADS_pathway.RData", sep="/"))){
+          data.frame(NULL)
+        }else{
+          load(paste(DB.load.working.dir(db),
+                     "ACS_ADS_pathway.RData", sep="/"))
+          DB$ACS_ADS_pathway <- ACS_ADS_pathway
+          res_ADS <- ACS_ADS_pathway$ADS.mat
+          for(i in 1:nrow(res_ADS)){
+            for(j in 1:ncol(res_ADS)){
+              res_ADS[i,j] <-
+                paste(round(ACS_ADS_pathway$ADS.mat[i,j],3), " (pval=",
+                      round(ACS_ADS_pathway$ADSpvalue.mat[i,j], 3), ")", sep="")
+            }
+          }
+          res_ADS
+        }
+      })
     }, session)
     print(paste("saving directory is: ", DB.load.working.dir(db), sep=""))
   })
@@ -44,6 +83,10 @@ pathway_server <- function(input, output, session){
   # })
   
   # global and pathway ACS/ADS
+  # output pathway ACS/ADS table
+
+  
+  
   pathway.list0 = eventReactive(c(input$pathwayfile,input$pathwayfile_ex),{
     if(input$select_pathwayfile == "upload"){
       if(!is.null(input$pathwayfile)){
@@ -278,13 +321,8 @@ pathway_server <- function(input, output, session){
         CluterLabelwithScatter = res$CluterLabelwithoutScatter[-res$scatter.index]
         rmClust = setdiff(unique(res$CluterLabelwithoutScatte),unique(CluterLabelwithScatter))
         
-        if(length(rmClust) != 0){
-          
-        }
-        
-        
         lapply(1:input$K_ACS, function(n){
-          if(length(rmClust) == 0 |(length(rmClust) != 0 & n != rmClust)){
+          if(length(rmClust) == 0 |((length(rmClust) != 0) & (!n %in% rmClust))){
             output[[paste0("clustInfo", n)]] = renderText({
               paste0("Cluster ", n,":")
             })
@@ -300,7 +338,7 @@ pathway_server <- function(input, output, session){
         
         if(length(DB$MergedDB)>2) {
           lapply(1:input$K_ACS, function(n){
-            if(length(rmClust) == 0 |(length(rmClust) != 0 & n != rmClust)){
+            if(length(rmClust) == 0 |((length(rmClust) != 0) & (!n %in% rmClust))){
               img.src <- paste0(DB.load.working.dir(db),"/comemberPlot/ComemMat_cluster_",n,"_threshold_",input$comProbCut, ".jpeg")
               output[[paste0("comemPlot", n)]] = renderImage({
                 list(src=img.src, contentType='image/png', alt="module")
@@ -447,7 +485,7 @@ pathway_server <- function(input, output, session){
           }
         })
         
-        print("c/d scores-DE evidence plot is done")
+        print("c/d scores - DE evidence plot is done")
         setwd(path_old)
         sendSuccessMessage(session, "c/d scores-DE evidence plot is done")
         
@@ -578,9 +616,12 @@ pathway_server <- function(input, output, session){
   #Generate table info
   observeEvent(Info(),{
     lapply(1:input$numNearPath,function(n) {
+      print(n)
       pathway = Info()$pathway[[n]]
       infoMat = Info()$infoMat_ls[[n]]
       
+      print(pathway)
+
       output[[paste0("clickedPathwayName",n)]] = renderText({paste0(n,". ",pathway)})
       #output[[paste0("clickedPathway",n)]] = DT::renderDataTable({infoMat})
     })

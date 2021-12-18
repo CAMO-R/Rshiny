@@ -37,9 +37,9 @@ pathway_ui <- function(id, label = "Aggregated Pathway") {
                                numericInput(ns("minDECut"), 
                                             label = "Lower bound of the minimum number of overlapping DE genes across studies", value = 0),
                                numericInput(ns("qfisherCut"), 
-                                            label = "Upper bound of the Fisher meta-qvalue", value = 0.05),
+                                            label = "Upper bound of the Fisher combination q-value", value = 0.05),
                                textInput(ns("topPathNnum"), 
-                                            label = "If only top pathways in at least one study are considered (use this if meta-qvalue is too stringent), please input the number of top pathways.", value = ""),
+                                            label = "If only top pathways in at least one study are considered (use this if Fisher combination q-value is too stringent), please input the number of top pathways.", value = ""),
                                style="primary"
                ),
                

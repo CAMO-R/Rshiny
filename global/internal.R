@@ -954,17 +954,20 @@ parseRelation <- function(pathwayID, keggSpecies="hsa", binary = T, sep = "-") {
   # download xml file
   download.kegg(pathway.id = pathwayID, keggSpecies, kegg.dir = ".", file.type="xml")
   # generate relation matrix
-  pathName = unlist(as.list(KEGGPATHID2NAME)[pathwayID])
+  KEGG.pathID2name = lapply(KEGGREST::keggList("pathway",keggSpecies),function(x) strsplit(x," - ")[[1]][-length(strsplit(x," - ")[[1]])])
+  names(KEGG.pathID2name) = gsub(paste0("path:",keggSpecies),"",names(KEGG.pathID2name))
+  
+  pathName = unlist(KEGG.pathID2name[pathwayID])
   
   xmlFile = paste0(getwd(), "/",keggSpecies, pathwayID,".xml")
   pathway = KEGGgraph::parseKGML(xmlFile)
   pathway = KEGGgraph::splitKEGGgroup(pathway)
   
   entries = KEGGgraph::nodes(pathway)
-  types = sapply(entries, getType)
+  types = sapply(entries, KEGGgraph::getType)
   relations = unique(KEGGgraph::edges(pathway)) ## to avoid duplicated edges
   relationNum = length(relations)
-  entryNames = as.list(sapply(entries, getName))
+  entryNames = as.list(sapply(entries, KEGGgraph::getName))
   if(any(types == "group") || any(types=="map")){
     entryNames = entryNames[!(types %in% c("group","map"))]
   }
@@ -984,8 +987,8 @@ parseRelation <- function(pathwayID, keggSpecies="hsa", binary = T, sep = "-") {
     return(relation.mat)
   }
   
-  entry1 = getEntryID(relations)[,1]
-  entry2 = getEntryID(relations)[,2]
+  entry1 = KEGGgraph::getEntryID(relations)[,1]
+  entry2 = KEGGgraph::getEntryID(relations)[,2]
   for(i in 1:length(relations)){
     if(entry1[i] %in% names(entryNames) && entry2[i] %in% names(entryNames)){
       relation.mat[entryNames[[entry1[i]]],entryNames[[entry2[i]]]]=1
