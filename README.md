@@ -19,12 +19,12 @@ Sys.setenv("PKG\_CXXFLAGS"="-std=c++11")
 
 #### Install the Shiny software
 1. Install the CAMO R package and dependency packages following the instruction at \url{https://github.com/CAMO-R/Rpackage}.
-2. Download the CAMO Shiny project at \url{https://github.com/CAMO-R/Rshiny} by clicking on ``code $>$ Download ZIP" and extract to a local folder named as ``Rshiny".
+2. Download the CAMO Shiny project at \url{https://github.com/CAMO-R/Rshiny} by clicking on "code > Download ZIP" and extract to a local folder renamed as "Rshiny".
 
 #### Start the Shiny software
-1. Open ``RunShiny.R" file in R console.
-2. Set the working directory of R to the directory ``path\_to\_Rshiny/" which contains the Shiny project folder ``Rshiny" saved above.
-3. Click on the ``Run App" button.
+1. Open "RunShiny.R" file in R console.
+2. Set the working directory of R to the directory "path\_to\_Rshiny/" which contains the Shiny project folder "Rshiny" saved above.
+3. Click on the "Run App" button.
 Note that the installation progress of R packages may take up to a few minutes. Please check the progress in R console and may need to select whether to update all/some/none packages. After all packages has been installed, the CAMO Shiny app will automatically open in your default browser.
 
 ## Where to find the full tutorial 
