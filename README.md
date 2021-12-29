@@ -28,7 +28,7 @@ Sys.setenv("PKG\_CXXFLAGS"="-std=c++11")
 Note that the installation progress of R packages may take up to a few minutes. Please check the progress in R console and may need to select whether to update all/some/none packages. After all packages has been installed, the CAMO Shiny app will automatically open in your default browser.
 
 ## Where to find the full tutorial 
-After starting CAMO, users need to select a local directory as the working directory in the Setting page before any analysis. Please refer to the full tutorial for details. 
+After starting CAMO, users need to select a local directory as the working directory in the Setting page before any analysis. Please refer to the full tutorial for details at 
 [https://github.com/CAMO-R/other/blob/main/Rshiny_tutorial/CAMO_RShiny_Tutorial.pdf](https://github.com/CAMO-R/other/blob/main/Rshiny_tutorial/CAMO_RShiny_Tutorial.pdf)
 
 
