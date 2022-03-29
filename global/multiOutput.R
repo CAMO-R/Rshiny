@@ -71,6 +71,8 @@ multiOutput <- function(mcmc.merge.list,dataset.names,select.pathway.list,ACS_AD
     if(!is.null(hashtb)){
       pathways = hashtb[match(1:max(hashtb[,3]),hashtb[,3]),"pathway"]
       tm_filtered = textMine(hashtb=hashtb,pathways=pathways,cluster.assign=cluster.assign,scatter.index=scatter.index,thres=keywords_cut,permutation=text.permutation)
+      save(tm_filtered,file = "TextMine_results.RData")
+      
     }else{
       tm_filtered = NULL
     }

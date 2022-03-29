@@ -1,7 +1,7 @@
 # This file will be executed prior to app startup to setup the necessary environment
 installed <- installed.packages()[,"Package"]
 if (!("preproc" %in% installed)) {
-  install_github("metaOmic/preproc")
+  devtools::install_github("metaOmic/preproc")
 }
 if(!("CAMO" %in% installed)){
   stop("Please install CAMO R package first")
