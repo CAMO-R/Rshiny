@@ -73,7 +73,9 @@ DB.sync <- function(db, db.meta) {
 DB.save <- function(db, study_use) {
   #  if(class(study) != "Study") stop("study must be Study")
   saveRDS(study_use, file=paste(db@dir, study_use@studyName, sep="/"))
-  db.meta <- rbind(meta(db), meta(study_use))
+  studies <- DB.load(db, list.files(path=db@dir))
+  db.meta <- lapply(studies, function(study_use) meta(study_use))
+  db.meta <- do.call(rbind, db.meta)
   DB.sync(db, db.meta)
 }
 

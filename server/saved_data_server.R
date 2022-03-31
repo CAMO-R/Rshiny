@@ -19,13 +19,11 @@ saved_data_server <- function(input, output, session) {
       }
     )
   })
-  
   output$table <- DT::renderDataTable({
-    df = DB$meta
-    colnames(df) = c("Species","StudyNames")
-    DT::datatable({df})
-    })
-  
+    DT::datatable({DB$meta})
+  })
+
+
   # observeEvent(input$orthologous, {
   #   if (!is.null(input$orthologous)) {
   #     inFile <- input$orthologous
@@ -87,20 +85,21 @@ saved_data_server <- function(input, output, session) {
     if(length(selected) == 0){
       "You haven't select any study yet"
     }else{
-      paste(meta(db)[selected,"studyName"], sep=", ")
+      paste(DB$meta[selected,"studyName"], sep=", ")
       
     }
   })
   
   observeEvent(input$delete, {
     selected <- input$table_rows_selected
-    if(length(selected) != 0 & !is.null(meta(db))){
-      selected <- rownames(meta(db)[selected,])
+    if(length(selected) != 0 & !is.null(DB$meta)){
+      selected <- rownames(DB$meta[selected,])
       DB.delete(db, selected)
+      DB$all_studies <- DB.load(db, list.files(path=db@dir)) #DB$all_studies order and meta(db) order does not match
+      studies <- DB.load(db, list.files(path=db@dir))
+      db.meta  <- lapply(DB$all_studies, function(study_use) meta(study_use))
+      DB$meta <- do.call(rbind, db.meta)
       sendSuccessMessage(session, paste(selected, "deleted"))
-      print(DB$meta)
-      DB$meta <- meta(db)
-      DB$all_studies <- DB.load(db, list.files(path=db@dir))
     }else{
       sendErrorMessage(session, "You haven't select any study yet")
     }
@@ -111,8 +110,10 @@ saved_data_server <- function(input, output, session) {
     wait(session, "Match and merge")
     try({
       selected <- input$table_rows_selected
-      if(length(selected) != 0 & !is.null(meta(db))){
-        selected <- as.numeric(rownames(meta(db)[selected,]))
+      print(selected)
+      print(DB$meta)
+      if(length(selected) != 0 & !is.null(DB$meta)){
+        selected <- as.numeric(rownames(DB$meta[selected,]))
         species <- sapply(1:length(DB$all_studies), function(x) 
           DB$all_studies[[x]]@species)[selected]
         print(species)

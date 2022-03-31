@@ -118,21 +118,23 @@ preproc_server <- function(input, output, session) {
   
   # DE analysis
   observeEvent(input$SingleDE, {
-    DEmethod = ifelse(input$dtype == "microarray", "Limma", "DEseq2")
-    wait(session, paste0("Running DE analysis using ",DEmethod,"..."))
-    try({
-      SingleDERes <- indDE(data=STUDY$expr, 
-                           group=as.factor(STUDY$clinical), 
-                           data.type=input$dtype, case.label=input$caseName, 
-                           ctrl.label=setdiff(unique(STUDY$clinical), input$caseName))
-      DE_lfc <- SingleDERes[,"logFC"]
-      DE_p <- SingleDERes[,"pvalue"]
-      STUDY$DE_p <- DE_p
-      STUDY$DE_lfc <- DE_lfc
-      SUMMARY$DESummary <- cbind(STUDY$DE_p, STUDY$DE_lfc)
-      rownames(SUMMARY$DESummary) <- STUDY$genes
-      colnames(SUMMARY$DESummary) <- c("pvalue", "logFC")
-    }, session)
+    if(is.null(SUMMARY$DESummary)){
+      DEmethod = ifelse(input$dtype == "microarray", "Limma", "DEseq2")
+      wait(session, paste0("Running DE analysis using ",DEmethod,"..."))
+      try({
+        SingleDERes <- indDE(data=STUDY$expr, 
+                             group=as.factor(STUDY$clinical), 
+                             data.type=input$dtype, case.label=input$caseName, 
+                             ctrl.label=setdiff(unique(STUDY$clinical), input$caseName))
+        DE_lfc <- SingleDERes[,"logFC"]
+        DE_p <- SingleDERes[,"pvalue"]
+        STUDY$DE_p <- DE_p
+        STUDY$DE_lfc <- DE_lfc
+        SUMMARY$DESummary <- cbind(STUDY$DE_p, STUDY$DE_lfc)
+        rownames(SUMMARY$DESummary) <- STUDY$genes
+        colnames(SUMMARY$DESummary) <- c("pvalue", "logFC")
+      }, session)
+    }
     
     wait(session, "Running threshold-free Bayesian differential analysis to generate posterior DE probabilities...")
     try({
