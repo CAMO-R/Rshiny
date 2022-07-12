@@ -37,7 +37,9 @@ saved_data_server <- function(input, output, session) {
     path_old <- getwd()
     
     try({
-      if(input$select_orthologous == "upload"){
+      if(input$select_orthologous == "no_orth"){
+        DB$full_ortholog = NULL
+      }else if(input$select_orthologous == "upload"){
         if(!is.null(input$orthologous)){
           file <- input$orthologous
           ext <- tools::file_ext(file$datapath)
@@ -123,10 +125,10 @@ saved_data_server <- function(input, output, session) {
         
         mcmc.list <- lapply(1:length(DB$all_studies), function(x) 
           DB$all_studies[[x]]@MCMC)[selected]
-        if(is.null(DB$full_ortholog)){
-          data(hs_mm_orth, package = "CAMO")
-          DB$full_ortholog <- hs_mm_orth
-        }
+        # if(is.null(DB$full_ortholog)){
+        #   data(hs_mm_orth, package = "CAMO")
+        #   DB$full_ortholog <- hs_mm_orth
+        # }
         #print(paste("ref number :", which(species == input$reference)[1], sep=""))
         mcmc.merge.list <- CAMO::merge(mcmc.list, species = species,
                                        ortholog.db = DB$full_ortholog, 
@@ -165,7 +167,7 @@ saved_data_server <- function(input, output, session) {
   # Render output/UI       #
   ##########################
   output$reference = renderUI({
-    if(length(DB$all_studies) != 0){
+    if(length(DB$all_studies) != 0 & input$select_orthologous != "no_orth"){
       selectInput(ns('reference'), 'Reference species', 
                   as.character(unique(sapply(1:length(DB$all_studies), function(x) 
                     DB$all_studies[[x]]@species))),
