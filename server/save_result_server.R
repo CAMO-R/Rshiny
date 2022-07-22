@@ -33,9 +33,9 @@ save_result_server <- function(input, output, session){
       if(length(DB$MergedDB)<2) {
         stop("At least two studies are needed")
       }
-      if(length(unique(DB$MergedSpecies))<2) {
-        stop("At least two species are neeeded")
-      }
+      # if(length(unique(DB$MergedSpecies))<2) {
+      #   stop("At least two species are neeeded")
+      # }
       if(length(DB$MergedDB)==2 & length(unique(DB$MergedSpecies))==2){
         DB$compType <- "single"
       }else{

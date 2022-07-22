@@ -27,9 +27,9 @@ pathway_server <- function(input, output, session){
       if(length(DB$MergedDB)<2) {
         stop("At least two studies are needed")
       }
-      if(length(unique(DB$MergedSpecies))<2) {
-        stop("At least two species are needed")
-      }
+      # if(length(unique(DB$MergedSpecies))<2) {
+      #   stop("At least two species are needed")
+      # }
       
       output$pathwayACS_Table <- DT::renderDataTable({
         if (!file.exists(paste(DB.load.working.dir(db),
@@ -358,7 +358,7 @@ pathway_server <- function(input, output, session){
     wait(session, "Generating DE evidence plot...")
     path_old = getwd()
     try({ 
-      if(length(DB$MergedDB) > 1 & length(unique(DB$MergedSpecies)) >1 & length(input$ACS_DEgroup) >1) {
+      if(length(DB$MergedDB) > 1  & length(input$ACS_DEgroup) >1) {
         path_old <- getwd()
         if(file.exists(paste0(DB.load.working.dir(db),"/ACS_ADS_pathway.RData"))){
           load(paste0(DB.load.working.dir(db),"/ACS_ADS_pathway.RData"))
@@ -490,7 +490,7 @@ pathway_server <- function(input, output, session){
         sendSuccessMessage(session, "c/d scores-DE evidence plot is done")
         
       }else{
-        stop("At least two studies of distince species should be provided.")
+        stop("At least two studies should be provided and selected.")
       }
     }, session)
     setwd(path_old)

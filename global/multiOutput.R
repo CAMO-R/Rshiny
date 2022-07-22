@@ -734,7 +734,7 @@ heatmapPathway <- function(acsPvalue, cluster.assign,scatter.index=NULL){
   }else{
     jpeg(paste("heatmapPathway","_K_",C,".jpeg",sep=""),quality = 100)
     par(cex.main=1, font.lab=2, font.axis=2)
-    hm<-heatmap.2(dataOrder, symm=F,main=NULL,
+    hm<-gplots::heatmap.2(dataOrder, symm=F,main=NULL,
                   cexCol=0.7,cexRow=0.3,adjCol= c(NA,-1),
                   rowsep=row.sep,
                   sepwidth=c(0.1, 0.3),  # width of the borders
@@ -856,7 +856,7 @@ clustModel <- function(acsPvaluePath,model.name, cluster.assign,pathway.name,sep
     breaks=seq(0,round(max(delta.mat)),by=0.01)
   }
   png(paste(pathway.name,'.png',sep=""))
-  hm <- heatmap.2(delta.mat[order(cluster.assign),order(cluster.assign)],
+  hm <- gplots::heatmap.2(delta.mat[order(cluster.assign),order(cluster.assign)],
                   main=pathway.name,
                   cexCol=1,cexRow=1,
                   colsep=cumsum(table(cluster.assign)),
@@ -901,7 +901,7 @@ clustModelOne <- function(acsPvaluePath,model.name, pathway.name,sep){
   }
   
   png(paste(pathway.name,'.png',sep=""))
-  hm <- heatmap.2(delta.mat,
+  hm <- gplots::heatmap.2(delta.mat,
                   main=pathway.name,
                   cexCol=1,cexRow=1,
                   symbreaks=T,key=T, keysize=1,symkey=F,

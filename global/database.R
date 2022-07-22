@@ -4,6 +4,10 @@ setClass("Study1", representation(
   species="character",
   MCMC="matrix"))
 
+setGeneric("meta", function(object) {
+  standardGeneric("meta")
+})
+
 setMethod("meta", signature("Study1"), function(object) {
   data.frame(species=object@species, studyName=object@studyName)
 })

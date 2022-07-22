@@ -1,33 +1,41 @@
 # This file will be executed prior to app startup to setup the necessary environment
 installed <- installed.packages()[,"Package"]
-if (!("preproc" %in% installed)) {
-  devtools::install_github("metaOmic/preproc")
-}
-if(!("CAMO" %in% installed)){
-  stop("Please install CAMO R package first")
-}
 
 #CRAN packages:
-for (package in c("utils", "devtools", "shinyBS", "cluster", "parallel", "igraph",
-                  "Rcpp", "RcppArmadillo", "RcppGSL", "ggplot2",
-                  "gplots", "shinyjs","dplyr","gridExtra", "reticulate")) {
+# for (package in c("utils", "devtools", "shinyBS", "cluster", "parallel", "igraph",
+#                   "Rcpp", "RcppArmadillo", "RcppGSL", "ggplot2",
+#                   "gplots", "shinyjs","dplyr","gridExtra", "reticulate")) {
+#   if (!(package %in% installed)) {
+#     install.packages(package, repos='http://cran.us.r-project.org')
+#   }
+# }
+for (package in c("utils", "DMwR", "devtools", "DT", "shinyBS")) {
   if (!(package %in% installed)) {
     install.packages(package, repos='http://cran.us.r-project.org')
   }
 }
 
-
 #Bioconductor packages:
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
-for (package in c("utils", "devtools", "shinyBS", "cluster", "parallel", "igraph",
-                  "Rcpp", "RcppArmadillo", "RcppGSL", "ggplot2",
-                  "gplots", "shinyjs","dplyr","gridExtra", "reticulate")) {
-  if (!(package %in% installed)) {
-    BiocManager::install(package)
-  }
+# for (package in c("utils", "devtools", "shinyBS", "cluster", "parallel", "igraph",
+#                   "Rcpp", "RcppArmadillo", "RcppGSL", "ggplot2",
+#                   "gplots", "shinyjs","dplyr","gridExtra", "reticulate","ggrepel")) {
+#   if (!(package %in% installed)) {
+#     BiocManager::install(package)
+#   }
+# }
+# if(!("DMwR" %in% installed)){# (deprecated and found in https://cran.r-project.org/src/contrib/Archive/DMwR/)
+#   remotes::install_url("http://cran.nexr.com/src/contrib/DMwR_0.4.1.tar.gz")
+# }
+# if (!("preproc" %in% installed)) {
+#   devtools::install_github("metaOmic/preproc")
+# }
+if(!("CAMO" %in% installed)){
+  stop("Please install CAMO R package first")
 }
-library(preproc)
+
+# library(preproc)
 library(shiny)
 library(shinyBS)
 library(shinyjs)
@@ -89,25 +97,25 @@ library(CAMO)  # main pkg
 
 #Include all global functions
 dir <- "global"
-for (f in list.files(path=dir, pattern="*.R")) {
+for (f in list.files(path=dir)) {
   source(paste(dir, f, sep="/"))
 }
-for (f in list.files(path=dir, pattern="*.cpp")) {
-  sourceCpp(paste(dir, f, sep="/"))
-}
+# for (f in list.files(path=dir)) {
+#   sourceCpp(paste(dir, f, sep="/"))
+# }
 
 # Create the directory for database prior to application startup
 db <- new("Database", name="studies")
 
 # Include all server modules
 dir <- "server"
-for (f in list.files(path=dir, pattern="*.R")) {
+for (f in list.files(path=dir)) {
   source(paste(dir, f, sep="/"))
 }
 
 # Include all UI modules
 dir <- "ui"
-for (f in list.files(path=dir, pattern="*.R")) {
+for (f in list.files(path=dir)) {
   source(paste(dir, f, sep="/"))
 }
 
