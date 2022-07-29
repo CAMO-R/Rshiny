@@ -206,7 +206,7 @@ pathway_server <- function(input, output, session){
     wait(session,"Consensus clustering to generate scree plot...")
     path_old <- getwd()
     try({ 
-      if(length(DB$MergedDB) > 1 & length(unique(DB$MergedSpecies)) > 1) {
+      if(length(DB$MergedDB) > 1) {
         #wait(session, "Pathway clustering")
         path_old = getwd()
         if(file.exists(paste0(DB.load.working.dir(db),"/ACS_ADS_pathway.RData"))){

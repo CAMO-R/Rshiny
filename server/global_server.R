@@ -27,9 +27,9 @@ global_server <- function(input, output, session){
       if(length(DB$MergedDB)<2) {
         stop("At least two studies are needed")
       }
-      if(length(unique(DB$MergedSpecies))<2) {
-        stop("At least two species are neeeded")
-      }
+      # if(length(unique(DB$MergedSpecies))<2) {
+      #   stop("At least two species are neeeded")
+      # }
       output$globalACS_ADSTable <- DT::renderDataTable({
         if (!file.exists(paste(DB.load.working.dir(db),
                                "ACS_ADS_global.RData", sep="/"))){
