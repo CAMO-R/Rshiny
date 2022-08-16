@@ -9,7 +9,7 @@ installed <- installed.packages()[,"Package"]
 #     install.packages(package, repos='http://cran.us.r-project.org')
 #   }
 # }
-for (package in c("utils", "DMwR", "devtools", "DT", "shinyBS")) {
+for (package in c("utils", "devtools", "DT", "shinyBS","ggrepel")) {
   if (!(package %in% installed)) {
     install.packages(package, repos='http://cran.us.r-project.org')
   }
