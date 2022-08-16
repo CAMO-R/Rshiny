@@ -1,6 +1,22 @@
 # CAMO
 CAMO is an analytical software with R Shiny based graphical user interface (GUI) for evaluating omics congruence of model organisms. It performs threshold-free Bayesian differential analysis and generates quantitative concordance and discordance scores (c-scores and d-scores) both genome-wide and at pathway level for all pair-wise studies. Based on the c-scores/d-scores, CAMO conducts a series of downstream machine learning and bioinformatics analysis with interactive visualization for pathway knowledge retrieval and topological gene module detection.
 
+## How to run from docker image
+```
+docker pull weiiizong/camo
+docker run --rm --name camo -p 3838:3838 weiiizong/camo:1.0
+```
+
+Then goto your web browser on [http://127.0.0.1:3838/CAMO/](http://127.0.0.1:3838/CAMO/).
+
+Do note that docker is a container application that will refresh everytime you restart the application. So expert knowledge is required to mount internal data directory out in order to persist work progress. Results generated during the computation are saved temporarily at /srv/shiny-server/CAMO/results. One way to copy results from the file system of a container with ID "#containerID" to the local machine is to run 
+```
+docker cp #containerID:/srv/shiny-server/CAMO/results .
+```
+If you just want to try out CAMO, docker is a great place to start. If you really use this software in your daily work, it is recommended that you read more detailed instruction on our docker page.
+
+For more information, refer to [docker page](https://hub.docker.com/r/weiiizong/camo).
+
 ## How to start the app
 
 #### Requirement
