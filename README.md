@@ -7,7 +7,7 @@ docker pull weiiizong/camo
 docker run --rm --name camo -p 3838:3838 weiiizong/camo:1.0
 ```
 
-Then goto your web browser on [http://127.0.0.1:3838/CAMO/](http://127.0.0.1:3838/CAMO/).
+Then go to your web browser on [http://127.0.0.1:3838/CAMO/](http://127.0.0.1:3838/CAMO/).
 
 Do note that docker is a container application that will refresh everytime you restart the application. So expert knowledge is required to mount internal data directory out in order to persist work progress. Results generated during the computation are saved temporarily at /srv/shiny-server/CAMO/results. One way to copy results from the file system of a container with ID "#containerID" to the local machine is to run 
 ```
